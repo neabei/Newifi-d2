@@ -79,15 +79,18 @@ jobs:
 
     - name: git clone lean
       run: |
-         cd openwrt/package
-         mkdir lean
-         cd lean
+         cd openwrt 
+         mkdir lean_tmp
+         cd lean_tmp
          git init
          git remote add origin https://github.com/coolsnowwolf/lede.git
          git config core.sparsecheckout true
          echo "package/lean" >> .git/info/sparse-checkout
          git pull --depth 1 origin master
-            
+         mv package/lean $GITHUB_WORKSPACE/openwrt/package/
+         cd ../
+         rm -rf lean_tmp
+    
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
